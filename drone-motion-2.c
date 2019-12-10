@@ -1,3 +1,6 @@
+/****************/
+
+
 #include <stdio.h>
 #include <math.h>
 
@@ -15,7 +18,7 @@ int main()
 {
   double t_i = 0e0;
   double t_f = 10e0;
-  double dt = 1e-2;
+  double dt = 1e-4;
   double t;
   double t0 = 0e0;
 
@@ -39,14 +42,14 @@ int main()
   fp = fopen("data.txt", "w");
   for(t = t_i; t < t_f; t += dt)
   {
-    if(y_o * y < 0) t0 = t;
-    y_o = y;
-    if(y < 0)
+    if(y_o * y < 0)
     {
+      t0 = t;
       u = 0;
       v = 0;
       y = 0;
     }
+    y_o = y;
     fprintf(fp, "%lf\t%lf\t%lf\t%lf\t%lf\n", t, u, v, x, y);
     uk1 = dt * fu(t, x, y, t0);
     uk2 = dt * fu(t + dt / 2, x, y, t0);
@@ -81,8 +84,8 @@ int main()
 
 double ff(double t, double t0)
 {
-  double phi = M_PI * fabs(t - t0);
-  if(fabs(t - t0) < 1) return 5 * exp(t - t0);
+  double phi = M_PI * fabs(t - t0) / 10;
+  if(fabs(t - t0) < 1) return 5 * exp(t - t0) * sin(phi);
   else return 0;
 }
 
@@ -98,7 +101,7 @@ double fv(double t, double x, double y, double t0)
 {
   double v_num;
   v_num = ff(t, t0) * sin(theta) / m - g;
-  if(y < 0 && v_num < 0) return 0;
+  if(y <= 0 && v_num < 0) return 0;
   else return v_num;
 }
 
