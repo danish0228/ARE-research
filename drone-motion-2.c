@@ -18,7 +18,7 @@ int main()
 {
   double t_i = 0e0;
   double t_f = 10e0;
-  double dt = 1e-2;
+  double dt = 1e-4;
   double t;
   double t0 = 0e0;
 
@@ -84,7 +84,7 @@ int main()
 
 double ff(double t, double t0)
 {
-  double phi = M_PI * fabs(t - t0);
+  double phi = M_PI * fabs(t - t0) / 10;
   if(fabs(t - t0) < 1) return 5 * exp(t - t0) * sin(phi);
   else return 0;
 }
